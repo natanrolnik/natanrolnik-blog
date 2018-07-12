@@ -71,4 +71,6 @@ Who would guess that after studying 5 years of Fisiology, Organic Chemistry, An
 
 > _You can't connect the dots looking forward; you can only connect them looking backwards._
 
+{:refdef: style="text-align: center;"}
 ### So what new things did you learn today? What are you going to learn next? **Stay hungry, stay foolish!**
+{: refdef}
