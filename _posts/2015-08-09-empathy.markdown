@@ -1,0 +1,29 @@
+---
+layout: post
+title: Empathy
+permalink: empathy
+date: 2015-08-09 15:03:31.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sem categoria
+tags: []
+---
+This weekend I had the opportunity to host someone for the weekend who I know since I was 16 years old (and my guest was around 8 back then). After talking about different things, I got very happy to hear the following: _"When I was little, you were one of the few, if not the only, older guy who always said hello to me"_. How easy is to make people feel special? A simple **_hello_** was enough. More than 10 years later, that made me feel gleeful.
+
+It doesn't matter whether you are designing a product, showing someone what you do for living and the reasons why you love it (possibly inspiring him/her), or simply if you come accross your neighbor. What makes us more connected to others is expressing how much we care about their needs, and acting towards it. A little kid just wants to be noticed, specially by those who are bigger than him. By taking people's needs into account, we can be better in every aspect of life.
+
+Better partners, better friends, better professionals. Better anything. This may sound trivial, but transforming this feeling into daily actions, or into long term projects, demands persistency and a lot of effort.
+
+When talking about software and design, this is extremely valid. Understand what your users need, and allow them to do it **easily, seamlessly and reliably**.
+
+Think about it. How will your friends (or clients, users, patients, or simply random people you get to know) think about you? What do you want to be remembered for in the future?
+
+PS: Coincidentally, this talk that I watched today (by [Dave Wiskus](https://twitter.com/dwiskus), a musician and designer), explains this very well, and made me think more about it.
+
+{% include youtubePlayer.html id="HL38kUwrpoM" %}
+
+[(slides and video together here)](https://realm.io/news/altconf-dave-wiskus-designing-for-humans/)
