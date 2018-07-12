@@ -1,0 +1,84 @@
+---
+layout: post
+title: Integrating fastlane with CircleCI to deploy with Crashlytics (Fabric)
+date: 2015-10-21 11:53:20.000000000 +03:00
+type: post
+parent_id: '0'
+published: true
+password: ''
+status: publish
+categories:
+- Sem categoria
+tags: []
+meta:
+  _wpcom_is_markdown: '1'
+  _edit_last: '31670132'
+  geo_public: '0'
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _publicize_job_id: '16049426961'
+author:
+  login: natanrolnik
+  email: natanrolnik@gmail.com
+  display_name: natanrolnik
+  first_name: ''
+  last_name: ''
+---
+<h2>Why fastlane? (Or better - why would you not use fastlane?!)</h2>
+<p>Since the creation of&nbsp;CocoaPods, the best thing to happen to the iOS community, by the iOS community, is <a href="http://fastlane.tools"><strong>fastlane</strong></a>. Developed mostly by <a href="https://twitter.com/krausefx">Felix Krause</a>,&nbsp;with the contribution of tens&nbsp;of people, it allows developers to automate a bunch of tasks that are done manually, repeatedly, each and every time we wanted to release an update for our apps. If you aren't familiar with fastlane, I suggest you to <a href="https://vimeo.com/124317399">watch this presentation</a> by the author.</p>
+<p>But better than running a lane in&nbsp;the command line in your local computer, is setting up a Continuous Integration to do it for you. For example, every time you merge your code to the master branch, submit to the AppStore;&nbsp;every time you merge your code to the develop branch, upload a new beta to Crashlytics. This can be done with services like Jenkins (if you have a dedicated machine to do so), <a href="https://travis-ci.com">Travis CI</a>, or <a href="https://circleci.com">CircleCI</a>. Because CircleCI basically allows you to run iOS builds for free (<a href="https://circleci.com/pricing">check the pricing here</a>), I wanted to use it to set up the deployment cycle for my current indie project. And as I encountered a few hurdles on the way, and had a lot of failing builds until it succeeded, I learned a lot and wanted to share in this post <strong>(Ah, don't miss the bonus in the end!)</strong></p>
+<h2>The Fastfile</h2>
+<p>When fastlane runs, it will look for a&nbsp;few files inside the&nbsp;fastlane folder. This&nbsp;folder is created when you run <code>fastlane init</code> in the command line and configure the project. The most important is called Fastfile, where you configure different lanes you want, each one with different series of actions. For example, the lane can run tests, submit the app to TestFlight, submit to the App Store, and so on. The documentation for the <a href="https://github.com/KrauseFx/fastlane/tree/master/docs">Fastfile can be found here</a>.</p>
+<p>To start, let's tell fastlane which platform we are talking about, what is the minimum version of fastlane required for this one, and what are the initial environment variables that will be used in the lanes. Everything inside <code>before_all</code> will run before any lane is started.</p>
+<p>https://gist.github.com/natanrolnik/23a7dc2ce860ef120195</p>
+<p>Now, let's define the Fabric lane. Basically, every time fastlane runs it, the following steps will happen:</p>
+<p>☑️ Run&nbsp;<code>pod install</code> via fastlane action <code>cocoapods</code><br />
+☑️ Run our own method <code>import_certificates</code>, that will add the certificate and the key related to the provisioning profile used to distribute the app;<br />
+☑️ Run <code>sigh</code> (another part of the fastlane tools), that will create and/or download the necessary AdHoc provisioning profile;<br />
+☑️ Set the environment variable <code>PROFILE_UDID</code>, that fastlane uses to associate the build&nbsp;with the correct provisioning profile;<br />
+☑️ Run gym, that will build the app (with my specific parameters; in my case, the AdHoc version should&nbsp;to be built, so I use the correct scheme for it).<br />
+☑️ Upload to Crashlytics (in my case, I didn't want notifications, so I turned them off by passing the <code>notifications: false</code> parameter.</p>
+<p>https://gist.github.com/natanrolnik/8aadcd043247b02dc45f</p>
+<h2>Oh, Certificates and Provisioning Profiles...</h2>
+<p>Now, the tricky part: as CircleCI creates a new instance, temporary, for every build, it&nbsp;needs to be able to access the certificate and add it to the keychain of the CircleCI instance&nbsp;-&nbsp;we don't want to&nbsp;create a new certificate for every build! Taking this into account, create a new folder called <code>certificates</code> inside your fastlane directory; find the certificate you are using (or the one associated to the provisioning profile) and add it there. The other file you will need, is the .p12 key. To get it, open the Keychain Access app in your Mac, find the certificate,&nbsp;find the key, and select Export as shown in this image. Save as a .p12 file.<a href="https://natanrolnik.files.wordpress.com/2015/10/exportcertificate.png"><img class="wp-image-252 aligncenter" src="{{ site.baseurl }}/assets/exportcertificate.png?w=300" alt="ExportCertificate" width="580" height="139" /></a></p>
+<p>Don't forget that the password you use to export the key, needs to be defined&nbsp;as an environment variable - I'll explain later how to do it.</p>
+<p>This is how your certificates folder should look like:</p>
+<p><strong><img class="size-medium wp-image-251 aligncenter" src="{{ site.baseurl }}/assets/screen-shot-2015-10-21-at-1-58-01-pm.png?w=300" alt="Screen Shot 2015-10-21 at 1.58.01 PM" width="300" height="195" /></strong></p>
+<p>We are almost done with the Fastfile. Finally, add the <code>import_certificates</code> method. It will create the keychain in the temporary CircleCI instance, and import to it the files we just put in the folder. Don't forget that we are using&nbsp;environment variables here like <code>KEYCHAIN_NAME</code> and <code>KEYCHAIN_PASSWORD</code> that must be&nbsp;setup in the <code>before_all</code> method&nbsp;- again,&nbsp;I'll explain below&nbsp;how to do it.</p>
+<p>https://gist.github.com/natanrolnik/6541bb8970ef467405e0</p>
+<p>The full gist for this Fastfile&nbsp;<a href="https://gist.github.com/natanrolnik/d61086044112e327abe5">can be found here</a>. I also added a <code>beta</code> lane for sending to TestFlight (in my case, I wanted it not to submit the app to review, so I set <code>pilot(skip_submission: true)</code>, and an <code>appstore</code> lane.</p>
+<h2>Configuring the&nbsp;circle.yml file</h2>
+<p>Now, the easy part. We just need to tell CircleCI which lanes we want it to run in which conditions.</p>
+<p>https://gist.github.com/natanrolnik/f0f344e19a124826aed8</p>
+<p>(If you are using a tool like <a href="https://rentzsch.github.io/mogenerator/">mogenerator</a> and your build process depends on it, you <strong>must</strong> add&nbsp;the lines 5-7. Otherwise, ignore it.)&nbsp;In the deployment part, we defined 3 different commands:</p>
+<p>⚪️ Staging: whenever&nbsp;there is new code in the develop branch, it should run the lane <code>fabric_silent</code><br />
+⚪️ Beta: whenever&nbsp;there is a new tag in my repository like beta-v0.7.3 or&nbsp;beta-v0.8, run the <code>beta</code> lane and send&nbsp;to TestFlight<br />
+⚪️ Release:&nbsp;whenever&nbsp;there is a new&nbsp;tag in my repository like release-v1.0 or release-v1.1, run the <code>App Store</code> lane to submit it.</p>
+<p>Important note: In order to make&nbsp;fastlane available, you need to&nbsp;add a Gemfile to your project root:</p>
+<p>https://gist.github.com/natanrolnik/167adf28300675874184</p>
+<h2>Configuring the&nbsp;Environment Variables</h2>
+<p>As we don't want to store the certificate as plain text in the Fastfile, we will use the CircleCI environment variables, that are stored correctly. Add the CERT_PASSWORD name and value (your .p12 certificate password). Also,&nbsp;if you are using <code>sigh</code> as we mentioned above, also setup FASTLANE_PASSWORD as your Apple ID login password, to download the provisioning profiles. You should also set here the&nbsp;KEYCHAIN_PASSWORD to create and unlock the keychain for storing the certificate.</p>
+<p><a href="https://natanrolnik.files.wordpress.com/2015/10/fastlane-environment-variables.png"><img class="wp-image-268 aligncenter" src="{{ site.baseurl }}/assets/fastlane-environment-variables.png?w=300" alt="fastlane-environment-variables" width="538" height="243" /></a></p>
+<p>In case you want to run fastlane&nbsp;locally (and not in CircleCI) , you can store&nbsp;these variables in the <code>~/.bashrc</code> file. To do it, you should do the following:</p>
+<p>☑️ Open the <code>~./bashrc</code> file with your preferred text editor&nbsp;(I like using&nbsp;<a href="https://atom.io">Atom</a>, so in Terminal, do the following): <code>atom ~./bashrc</code>;<br />
+☑️ Add the environment variables this way:</p>
+<p><code>export CERT_PASSWORD=your_p12_password<br />
+export KEYCHAIN_PASSWORD=temp_keychain_password<br />
+export FASTLANE_PASSWORD=your_apple_id_password<br />
+</code></p>
+<p>☑️ Save the <code>~./bashrc</code> file;<br />
+☑️ Enter <code>source ~/.bashrc</code> in Terminal to reload it without the need&nbsp;to restart it.</p>
+<p>(You can also <a href="https://github.com/fastlane/setups/blob/master/Keys.md">check this guide on GitHub</a> for more options on how to set the environment variables)</p>
+<p style="text-align:center;"><strong>Now you should have your most recent app waiting for you in the Crashlytics Beta app! Hooray! You can <a href="http://twitter.com/natanrolnik">ping&nbsp;me @natanrolnik</a>&nbsp;if you find any problems and I'll try to help.</strong></p>
+<h2><strong>Bonus - push notifications!</strong></h2>
+<p>Wouldn't it be cool if I could be notified&nbsp;every time a build finishes or fails? I created a small <a href="http://www.parse.com">Parse</a> app (with custom <a href="https://www.parse.com/docs/cloudcode/guide#cloud-code-aftersave-triggers">Cloud Code after&nbsp;save triggers</a>) to <a href="https://www.parse.com/docs/js/guide#push-notifications-sending-options">send push notifications</a>&nbsp;to my phone. You will need to setup Cloud Code and create an iOS app (to install on your phone) that will receive the notification.</p>
+<p>Whenever a lane&nbsp;succeeds, the <code>after_all</code> method is called, and whenever a&nbsp;lane fails, the error method is called:</p>
+<p>https://gist.github.com/natanrolnik/610c97eba7633e766857</p>
+<p>And using the <a href="https://www.parse.com/docs/rest/guide">Parse Rest API</a>, I defined my own <code>push_notify</code>&nbsp;method&nbsp;that adds&nbsp;the LaneResult&nbsp;object to Parse. (Don't forget to add your parse keys at lines 9 and 10 - in this case, you can also set them as environment variables to keep it more secure, but I don't think it's needed here, as these are the keys of my own notifier app):</p>
+<p>https://gist.github.com/natanrolnik/c8062857a9d71914e8c8</p>
+<p>This is how the after save method looks like in the <code>main.js</code> file of the Parse app Cloud Code:</p>
+<p>https://gist.github.com/natanrolnik/8bc3631cb4d4b534ea5c</p>
+<p>(You can also use fast lane's action <code>slack</code> to post the result to your Slack channel or group. <a href="https://github.com/KrauseFx/fastlane/blob/master/docs/Actions.md#slack">Check out here how to do it</a>)</p>
+<p>The result?</p>
+<p><a href="https://natanrolnik.files.wordpress.com/2015/10/screen-shot-2015-10-21-at-2-47-40-pm.png"><img class="wp-image-253 aligncenter" src="{{ site.baseurl }}/assets/screen-shot-2015-10-21-at-2-47-40-pm.png?w=242" alt="Screen Shot 2015-10-21 at 2.47.40 PM" width="336" height="414" /></a></p>
+<h2>That's it! I hope you enjoyed reading this article. Happy coding! And easy shipping!</h2>
