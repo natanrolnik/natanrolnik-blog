@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   My thoughts on programming (mostly, but not exclusively, on Apple platforms)
   design, technology, judaism, an life in general.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "blog.natanrolnik.me"
+url: "ecstatic-pasteur-ebeda5.netlify.com"
 
 # Build settings
 markdown: kramdown
