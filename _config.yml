@@ -24,10 +24,7 @@ url: "blog.natanrolnik.me"
 
 # Build settings
 markdown: kramdown
-# theme: minima
-# theme: leonids
-remote_theme: "mmistakes/minimal-mistakes"
-# theme: minimal-mistakes-jekyll
+theme: minimal-mistakes-jekyll
 
 plugins:
   - jekyll-feed
