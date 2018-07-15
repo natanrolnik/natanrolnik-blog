@@ -18,9 +18,9 @@ title: Natan Rolnik's blog
 email: blog@natanrolnik.me
 description: >- # this means to ignore newlines until "baseurl:"
   My thoughts on programming (mostly, but not exclusively, on Apple platforms)
-  design, technology, and life in general.
+  design, technology, judaism, and life in general.
 baseurl: "" # the subpath of your site, e.g. /blog
-# url: "ecstatic-pasteur-ebeda5.netlify.com"
+url: "https://blog.natanrolnik.me"
 
 # Build settings
 markdown: kramdown
@@ -54,7 +54,7 @@ author:
   twitter: "natanrolnik"
   bio: >-
     My thoughts on programming (mostly, but not exclusively, on Apple platforms)
-    design, technology, judaism, and life in general."
+    design, technology, judaism, and life in general.
   email  : "me+blog@natanrolnik.me"
   uri    : "https://natanrolnik.me"
 
