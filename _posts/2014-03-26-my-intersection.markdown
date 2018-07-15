@@ -1,15 +1,12 @@
 ---
-layout: post
 title: My Intersection
 permalink: /my-intersection
 date: 2014-03-26 18:14:15.000000000 +02:00
-type: post
 published: true
 status: publish
 categories:
 - Apple
 - iOS
-- Sem categoria
 tags: []
 ---
 We all want to find knowledge areas and people who inspire us. A few months ago, I watched a documentary called [Jiro Dreams of Sushi](http://www.magpictures.com/jirodreamsofsushi/). In a nutshell, the movie tells the story of a Japanese senior that did what he was fond of since he was young: sushi. To be honest, the movie may be a bit boring at some points, but in general, I got extremely inspired by Jiro, today a world renowned sushi chef. Why? Because he likes what he does so much, that he dreams about new sushi recipes!

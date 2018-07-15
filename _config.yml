@@ -13,6 +13,7 @@
 # you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
+
 title: Natan Rolnik's blog
 email: blog@natanrolnik.me
 description: >- # this means to ignore newlines until "baseurl:"
@@ -20,14 +21,45 @@ description: >- # this means to ignore newlines until "baseurl:"
   design, technology, judaism, an life in general.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "blog.natanrolnik.me"
-twitter_username: natanrolnik
-github_username:  natanrolnik
 
 # Build settings
 markdown: kramdown
-theme: minima
+# theme: minima
+# theme: leonids
+remote_theme: "mmistakes/minimal-mistakes"
+# theme: minimal-mistakes-jekyll
+
 plugins:
   - jekyll-feed
+  - jekyll-gist
+  - jekyll-json-feed
+
+paginate: 5 # amount of posts to show
+paginate_path: /page:num/
+search: true
+search_full_content: true
+minimal_mistakes_skin: "air"
+
+defaults:
+  # _posts
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: single
+      read_time: true
+      author_profile: true
+
+author:
+  name: "Natan Rolnik"
+  github: "natanrolnik"
+  avatar: "https://gravatar.com/avatar/c7af4f539e54c0c2b159b8d35c506306?s=500"
+  twitter: "natanrolnik"
+  bio: >-
+    My thoughts on programming (mostly, but not exclusively, on Apple platforms)
+    design, technology, judaism, an life in general."
+  email  : "me+blog@natanrolnik.me"
+  uri    : "https://natanrolnik.me"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

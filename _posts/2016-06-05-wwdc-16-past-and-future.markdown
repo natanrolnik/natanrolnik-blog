@@ -1,16 +1,11 @@
 ---
-layout: post
 title: WWDC 16 - Past and Future
 permalink: /wwdc16-past-and-future
 date: 2016-06-05 15:35:38.000000000 +03:00
-type: post
-parent_id: '0'
 published: true
-password: ''
 status: publish
 categories:
 - iOS
-- Sem categoria
 - WWDC
 tags: []
 ---

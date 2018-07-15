@@ -1,12 +1,12 @@
 ---
-layout: post
+
 title: You may ask yourself "How can I start developing apps?" and I can answer.
 date: 2015-02-04 17:08:21.000000000 +02:00
-type: post
+
 permalink: /how-i-learned-to-code
 published: true
 categories:
-- Sem categoria
+
 tags:
 - Apple
 - iOS

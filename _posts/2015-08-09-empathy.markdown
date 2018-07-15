@@ -1,15 +1,12 @@
 ---
-layout: post
+layout: single
 title: Empathy
 permalink: empathy
 date: 2015-08-09 15:03:31.000000000 +03:00
-type: post
-parent_id: '0'
 published: true
-password: ''
 status: publish
 categories:
-- Sem categoria
+
 tags: []
 ---
 This weekend I had the opportunity to host someone for the weekend who I know since I was 16 years old (and my guest was around 8 back then). After talking about different things, I got very happy to hear the following: _"When I was little, you were one of the few, if not the only, older guy who always said hello to me"_. How easy is to make people feel special? A simple **_hello_** was enough. More than 10 years later, that made me feel gleeful.

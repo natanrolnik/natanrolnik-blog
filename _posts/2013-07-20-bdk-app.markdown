@@ -1,11 +1,11 @@
 ---
-layout: post
+
 title: BDK App
 date: 2013-07-20 20:22:29.000000000 +03:00
-type: post
-parent_id: '0'
+
+
 published: true
-password: ''
+
 status: publish
 categories:
 - My Apps
