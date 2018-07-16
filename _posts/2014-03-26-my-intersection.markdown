@@ -12,7 +12,7 @@ tags: []
 We all want to find knowledge areas and people who inspire us. A few months ago, I watched a documentary called [Jiro Dreams of Sushi](http://www.magpictures.com/jirodreamsofsushi/). In a nutshell, the movie tells the story of a Japanese senior that did what he was fond of since he was young: sushi. To be honest, the movie may be a bit boring at some points, but in general, I got extremely inspired by Jiro, today a world renowned sushi chef. Why? Because he likes what he does so much, that he dreams about new sushi recipes!
 
 {:refdef: style="text-align: center;width: 60%;margin-left:20%"}
-[![Jiro - the passionate sushi chef]({{ site.baseurl }}/assets/JiroDreamsOfSushi.jpg?)](http://magpictures.com/jirodreamsofsushi/)
+[![Jiro - the passionate sushi chef]({{ site.baseurl }}/assets/images/JiroDreamsOfSushi.jpg?)](http://magpictures.com/jirodreamsofsushi/)
 *Jiro - the passionate sushi chef*
 {: refdef}
 
@@ -25,7 +25,7 @@ Here it goes: all the 3 areas mentioned - Software Development, Health Care, an
 Can more things be connected to this idea? Of course. Maybe this answer was not so special? Maybe. But I am still impressed with and excited that it happened while I was not awake; that means it came from the depth of my mind. I am happy I found the common ground for these passions. That is what I am calling, from now on, _my intersection_. Even though I do not have "the answer" for this intersection, it already bore fruits - my jewish-oriented iOS applications available in the App Store are some examples.
 
 {:refdef: style="text-align: center;width: 60%;margin-left:20%"}
-![]({{ site.baseurl }}/assets/interesection.png)
+![]({{ site.baseurl }}/assets/images/interesection.png)
 *The intersection between Technology and Liberal Arts*
 {: refdef}
 
