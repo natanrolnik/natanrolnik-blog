@@ -30,9 +30,7 @@ In [January 2007 Apple announced](https://www.youtube.com/watch?v=vZYlhShD2oQ) t
 
 A year and a half after that, in September 2008, the second generation was launched internationally and arrived to Brazil- I bought the iPhone 3G on the day it was available for sale. It's very appropriate to say that the first mobile applications store that really worked, the iOS App Store, was launched at the same time. And the revolution of mobile started: there's an app for that.
 
-{:refdef: style="text-align: center;"}
-![App Store]({{ site.baseurl }}/assets/images/AppStore2008Icon.png)
-{: refdef}
+{% include image.html name="AppStore2008Icon.png" caption="App Store in 2008" %}
 
 Back in the day, there were only a few apps with Jewish content in the App Store - and with very low usability and bad design compared to the platform. So I wanted not only to do something for this relatively small niche, the Jewish world, but also to this even smaller niche - the Jewish community in Brazil. I decided that I would take one of the main books about the core values of Judaism, and make it available in Portuguese in the App Store.
 
