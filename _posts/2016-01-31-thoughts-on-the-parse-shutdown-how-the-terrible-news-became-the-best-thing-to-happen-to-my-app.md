@@ -2,6 +2,7 @@
 title: Thoughts on the Parse shutdown - how the terrible news became the best thing
   to happen to my app (and my career)
 date: 2016-01-31 21:51:21.000000000 +02:00
+permalink: /parse-shutdown
 published: true
 status: publish
 categories:
@@ -9,6 +10,7 @@ categories:
 - Parse
 tags: []
 ---
+
 Friday morning, Israel time. After I wake up and look to my iPhone, I see 3 notifications from friends (fellow developers that know how much I love Parse), sending me the link to [Kevin Lacker's post](http://blog.parse.com/announcements/moving-on/). When I saw the title, "Moving On", I froze. Only a few days after releasing [my side project](http://www.DoctorBuddyApp.com), an app I've worked on for over than a year and a half, using Parse as backend, would I read the worst thing to happen to that and to a few other smaller projects?
 
 ### Why I loved it so much?
