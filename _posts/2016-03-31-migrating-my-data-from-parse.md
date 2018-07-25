@@ -1,6 +1,7 @@
 ---
 title: Migrating My Data From Parse
 date: 2016-03-31 09:34:25.000000000 +03:00
+permalink: /migrating-my-parse-data
 published: true
 tags: []
 ---
