@@ -56,6 +56,12 @@ author:
   email  : "me+blog@natanrolnik.me"
   uri    : "https://natanrolnik.me"
 
+# Analytics
+analytics:
+  provider               : "google"
+  google:
+    tracking_id          : "UA-134052334-2"
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
