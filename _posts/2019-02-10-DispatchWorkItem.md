@@ -12,7 +12,7 @@ categories:
 tags: []
 ---
 
-Performing delayed tasks and working with multithreading in Cocoa became much simpler since the introduction of GCD - Grand Central Dispatch. Before it existed, delaying a task would require using `NSThread` and/or `NSOperationQueue`, or the simple `performSelector:withObject:afterDelay:` method available in `NSObject`.
+Performing delayed tasks and working with multithreading in Cocoa became much simpler since the introduction of GCD - Grand Central Dispatch. Before it existed, delaying a task would require using `NSThread` and/or `NSOperationQueue`, or the simple but limited `performSelector:withObject:afterDelay:` method available in `NSObject`.
 
 While `NSOperation`s are better, in general, when you need to manage multiple tasks that can be added to a queue (like sequential image downloads, for example), GCD allows a simpler API to run blocks of code with the `dispatch_after` (Objective-C) and `DispatchQueue.main.asyncAfter` methods.
 
@@ -57,7 +57,7 @@ A solution that I came up with, was creating a `Dispatcher` object, that would m
 1. Scheduling multiple tasks by identifier (a string) and delay (time interval);
 2. Overwriting (cancelling and rescheduling) a scheduled task if a task with the same identifier already exists;
 3. Cancelling tasks by identifier;
-4. Cancell all tasks when it is deallocated.
+4. Cancel all tasks when it is deallocated
 
 After a few iterations and inputs from friends, I was able to get to this (you can see the [playground version here](https://gist.github.com/natanrolnik/6c1d9baa04ebc163f52bd5224db32d07)):
 
