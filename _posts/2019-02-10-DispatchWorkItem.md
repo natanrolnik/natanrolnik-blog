@@ -67,4 +67,4 @@ After a few iterations and inputs from friends, I was able to get to this (you c
 
 GCD and `DispatchWorkItem`s are provide us a simple way to perform powerful and complex tasks, that would require us using different or older APIs. Sticking to it might save us from unnecessary frameworks or wrong abstractions and architectures.
 
-If you have any comments or suggestions, please ping me on twitter: [@natanrolnik](https://twitter.com/natanrolnik)
+Feel free to add have any comments below, or ping me on twitter: [@natanrolnik](https://twitter.com/natanrolnik)
