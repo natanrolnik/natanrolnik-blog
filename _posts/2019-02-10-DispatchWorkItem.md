@@ -4,6 +4,7 @@ permalink: /dispatch-work-item
 date: 2019-02-10 15:35:38.000000000 +03:00
 published: true
 status: publish
+comments: true
 categories:
 - iOS
 - Swift
@@ -66,4 +67,4 @@ After a few iterations and inputs from friends, I was able to get to this (you c
 
 GCD and `DispatchWorkItem`s are provide us a simple way to perform powerful and complex tasks, that would require us using different or older APIs. Sticking to it might save us from unnecessary frameworks or wrong abstractions and architectures.
 
-If you have any comments or suggestions, you can find me on twitter: [@natanrolnik](https://twitter.com/natanrolnik)
+If you have any comments or suggestions, please ping me on twitter: [@natanrolnik](https://twitter.com/natanrolnik)
