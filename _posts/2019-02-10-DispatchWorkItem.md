@@ -58,9 +58,9 @@ A solution that I came up with, was creating a `Dispatcher` object, that would m
 3. Cancelling tasks by identifier;
 4. Cancell all tasks when it is deallocated.
 
-After a few iterations and inputs from friends, I was able to get to this:
+After a few iterations and inputs from friends, I was able to get to this (you can see the [playground version here](https://gist.github.com/natanrolnik/6c1d9baa04ebc163f52bd5224db32d07)):
 
-{% gist 6c1d9baa04ebc163f52bd5224db32d07 %}
+{% gist 1a5d07ea79ba529eafb9b03d21111705 %}
 
 ---
 
