@@ -1,10 +1,10 @@
 ---
-title: Using DispatchWorkItem to delay tasks and allow cancelling them
+title: Using DispatchWorkItem to delay (and cancel) tasks
 permalink: /dispatch-work-item
-date: 2019-02-12 15:35:38.000000000 +03:00
+date: 2019-02-14 16:10:00.000000000 +03:00
+comments: true
 published: true
 status: publish
-comments: true
 categories:
 - iOS
 - Swift
