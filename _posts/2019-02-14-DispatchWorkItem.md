@@ -63,8 +63,10 @@ After a few iterations and inputs from friends, I was able to get to this (you c
 
 {% gist 1a5d07ea79ba529eafb9b03d21111705 %}
 
----
+------
+
+##### In a Paragraph
 
 GCD and `DispatchWorkItem`s are provide us a simple way to perform powerful and complex tasks, that would require us using different or older APIs. Sticking to it might save us from unnecessary frameworks or wrong abstractions and architectures.
 
-Feel free to add have any comments below, or ping me on twitter: [@natanrolnik](https://twitter.com/natanrolnik)
+Feel free to add any comments below, or ping me on twitter if you have any suggestions or ideas: [@natanrolnik](https://twitter.com/natanrolnik)
