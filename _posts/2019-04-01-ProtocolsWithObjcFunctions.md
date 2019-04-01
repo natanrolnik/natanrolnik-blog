@@ -11,7 +11,7 @@ categories:
 tags: []
 ---
 
-Since Swift's introduction, a lot was covered about Protocol Oriented Programming (aka POP). In contrast to Object Oriented design, which is based in inheritance, POP allows your objects and types to "wear many hats". Instead of making an object inherit functions from its superclass(es), using protocols can make it more flexible and modular by implementing a protocols methods.
+Since Swift's introduction, a lot was covered about Protocol Oriented Programming (aka POP). In contrast to Object Oriented design, which is based in inheritance, POP allows your objects and types to "wear many hats". Instead of making an object inherit functions from its superclass(es), using protocols can make it more flexible and modular by implementing a protocol's methods.
 
 Swift 2 introduced a huge factor in favor of using protocols: default implementation. Let's start with an example. `ScrollRefreshable` will make it easier to add a `UIRefreshControl` to our `UIScrollView`s and handle the refresh action.
 
