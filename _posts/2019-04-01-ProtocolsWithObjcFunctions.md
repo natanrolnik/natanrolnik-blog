@@ -1,7 +1,7 @@
 ---
 title: Protocols Default Implementations with UIControl.Event handling
 permalink: /protocols-default-impl-control-handling
-date: 2019-04-01 16:10:00.000000000 +03:00
+date: 2019-04-01 12:00:00.000000000 +03:00
 comments: true
 published: true
 status: publish
@@ -176,6 +176,6 @@ extension ScrollRefreshable {
 
 ##### In a Paragraph
 
-Protocols allow us to make our objects more flexible, and default implementations helps implementing them in a concise way. With a bit of creativity and using the Objective C runtime, we can get rid of the `@objc` protocol constraint whenever the target-action pattern is required in a protocol extension (as in  `UIButton` or any other `UIControl`). 
+Protocols allow us to make our objects more flexible, and default implementations helps implementing them in a concise way. With a bit of creativity and using the Objective C runtime, we can get rid of the `@objc` protocol constraint whenever the target-action pattern is required in a protocol extension (as in  `UIButton` or any other `UIControl`).
 
 Feel free to add any comments below, or ping me on twitter if you have any suggestions or ideas: [@natanrolnik](https://twitter.com/natanrolnik)
