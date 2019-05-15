@@ -1,6 +1,6 @@
 ---
 title: The power of enums with associated values and making them conform to Codable
-permalink: /protocols-default-impl-control-handling
+permalink: /codable-enums-associated-values
 date: 2019-05-15 12:00:00.000000000 +03:00
 comments: true
 published: true
