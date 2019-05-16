@@ -8,7 +8,7 @@ status: publish
 categories:
 - iOS
 - Swift
-tags: []
+tags: [Codable, Enum]
 ---
 
 One of the Swift's greatest features, and one of my favorites, are enums with associated values. The language itself uses them for its fundamentals, like `Optional<T>`, which either has a `.some(T)` or is `.none`. Another example is the new since Swift 5 `Result<T, E>`, which either contains a `.success(T)` or a`.failure(E)` case. In this post, we will go over cases (no pun intended) where an enum is more suitable than a struct or class, and also learn how one can make enums with associated values conform to Codable, achieving a better and safer usage of these data representations when they need to be encoded and decoded. You can scroll to the end of the post to get the final playground.
@@ -216,3 +216,7 @@ Done! Our enum is now ready to be encoded and decoded. If you want to test and s
 ##### In a Paragraph
 
 Enums with associated values provide expected scenarios to the developer dealing with it, leaving out uncertainties and ambiguities. Leveraging the `Codable` protocol by implementing only 2 methods, server or client side Swift apps can send and receive the enums data representations in a standardized way, making things more predictable and safe. You can [download the playground](https://files.natanrolnik.me/blog-downloads/CodableEnumsWithAssociatedValues.playground.zip) to play with it.
+
+------
+
+*Thanks to [@rockthebruno](https://twitter.com/rockthebruno) for reviewing this post*
