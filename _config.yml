@@ -17,8 +17,8 @@
 title: Natan Rolnik's blog
 email: blog@natanrolnik.me
 description: >- # this means to ignore newlines until "baseurl:"
-  My thoughts on programming (mostly, but not exclusively, on Apple platforms)
-  design, technology, judaism, and life in general.
+  My thoughts on iOS development, programming (mostly, but not exclusively, on Apple platforms)
+  design, and other bits of technology, judaism, and life in general.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://blog.natanrolnik.me"
 
@@ -52,8 +52,8 @@ author:
   avatar: "https://gravatar.com/avatar/c7af4f539e54c0c2b159b8d35c506306?s=500"
   twitter: "natanrolnik"
   bio: >-
-    My thoughts on programming (mostly, but not exclusively, on Apple platforms)
-    design, technology, judaism, and life in general.
+    My thoughts on iOS development, programming (mostly, but not exclusively, on Apple platforms)
+    design, and other bits of technology, judaism, and life in general.
   email  : "me+b@natanrolnik.me"
   uri    : "https://natanrolnik.me"
 
