@@ -119,7 +119,7 @@ The message is pretty clear. Because Swift doesn't know how one wants the associ
 
 ## Implementing the Encodable & Decodable protocols
 
-#### Decodable
+#### Encodable
 
 As the errors stated, there are two methods that need to be implemented. Let's first do the encoding part, thinking about the JSON declared above, and move to the decoding later on.
 
