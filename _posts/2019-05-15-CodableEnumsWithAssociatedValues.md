@@ -131,18 +131,26 @@ The required method by `Encodable` is `encode(to encoder: Encoder)`. The paramet
 
 The documentation says: _You must use only one kind of top-level encoding container_. This means that when encoding a value, only one container must be used, and not more than one simultaneously. In our case, we will choose the keyed container, because we will encode our enum into a key-value JSON object.
 
-As mentioned in the explanation of the keyed container, we need to create a `CodingKey`-conforming type. We will create a case for each possible entry in the JSON.
+As mentioned in the explanation of the keyed container, we need to create a `CodingKey`-conforming type. We will create a case for each possible key in the JSON. Also, because there are only three acceptable statuses (confirmed, waitlist, and not allowed), we can use a simple enum to ensure the `status` value is one of them.
 
 ```swift
+//declare which keys in the JSON we are interested in
 enum CodingKeys: String, CodingKey {
     case status
     case confirmed
     case position
     case reason
 }
+
+//declare the possible values os the status key
+private enum EventConfirmationStatus: String, Codable {
+    case confirmed
+    case waitlist
+    case notAllowed = "not allowed"
+}
 ```
 
-Notice that, as our coding keys is an enum where the raw value is a string, there is no need to actually declare the string - the cases are compiled into the raw values. Now, it's left to implement the encoding itself. We will need to do two things: (1) get the keyed container from the encoder, and (2) iterate over the event confirmation enum in order to encode each case, separately:
+Notice that in both enums, where the raw value is a string, there is no need to actually declare it - the cases are compiled into the raw values (except the `notAllowed` case). Now it's left to implement the encoding itself. We will need to do two things: (1) get the keyed container from the encoder, and (2) iterate over the event confirmation enum in order to encode each case, separately:
 
 ``` swift
 extension EventConfirmationResponse: Encodable {
@@ -153,15 +161,15 @@ extension EventConfirmationResponse: Encodable {
       //iterate over self and encode (1) the status and (2) the associated value(s)
       switch self {
       case .confirmed(let users):
-          try container.encode("confirmed", forKey: .status)
+          try container.encode(EventConfirmationStatus.confirmed, forKey: .status)
           try container.encode(users, forKey: .confirmedUsers)
-      case .notAllowed(let reason):
-          try container.encode("not allowed", forKey: .status)
-          try container.encode(reason, forKey: .reason)
       case .waitlist(let position, let users):
-          try container.encode("waitlist", forKey: .status)
+          try container.encode(EventConfirmationStatus.waitlist, forKey: .status)
           try container.encode(users, forKey: .confirmedUsers)
           try container.encode(position, forKey: .position)
+      case .notAllowed(let reason):
+          try container.encode(EventConfirmationStatus.notAllowed, forKey: .status)
+          try container.encode(reason, forKey: .reason)
       }
   }
 }
@@ -176,28 +184,27 @@ To finally conform do `Codable`, there's left the `Decodable` protocol. To achie
 Similar `Encoder`, `Decoder` also has the three analogue containers. As all 3 states have a `status` key and we need it to define which state will be initialized, we will look for it first by trying to decode a `String` for the `.status` coding key. Then, we iterate on the status value, and look for the other values for the relevant keys:
 
 ```swift
-init(from decoder: Decoder) throws {
-    //access the keyed container
-    let container = try decoder.container(keyedBy: CodingKeys.self)
+extension EventConfirmationResponse: Decodable {
+    init(from decoder: Decoder) throws {
+        //access the keyed container
+        let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    //decode the value for the status key
-    let status = try container.decode(String.self, forKey: .status)
+        //decode the value for the status key into the EventConfirmationStatus enum
+        let status = try container.decode(EventConfirmationStatus.self, forKey: .status)
 
-    //iterate over the received status, and try to decode the other relevant values
-    switch status {
-    case "confirmed":
-        let users = try container.decode([User].self, forKey: .confirmedUsers)
-        self = .confirmed(users)
-    case "waitlist":
-        let users = try container.decode([User].self, forKey: .confirmedUsers)
-        let position = try container.decode(Int.self, forKey: .position)
-        self = .waitlist(position, users)
-    case "not allowed":
-        let reason = try container.decode(String.self, forKey: .reason)
-        self = .notAllowed(reason)
-    default:
-        //a different status was received, throw an error
-        throw EventConfirmationDecodingError.unknownStatus
+        //iterate over the received status, and try to decode the other relevant values
+        switch status {
+        case .confirmed:
+            let users = try container.decode([User].self, forKey: .confirmedUsers)
+            self = .confirmed(users)
+        case .waitlist:
+            let users = try container.decode([User].self, forKey: .confirmedUsers)
+            let position = try container.decode(Int.self, forKey: .position)
+            self = .waitlist(position, users)
+        case .notAllowed:
+            let reason = try container.decode(String.self, forKey: .reason)
+            self = .notAllowed(reason)
+        }
     }
 }
 ```
