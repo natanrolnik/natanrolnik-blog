@@ -87,7 +87,7 @@ enum EventConfirmationResponse {
 }
 ```
 
-Great! Now, whenever this response this to be used for being displayed to the user, one can use a `switch` statement to check each case and extract the associated values:
+Great! Now, whenever this response needs to be used for being displayed to the user, one can use a `switch` statement to check each case and extract the associated values:
 
 ```swift
 switch confirmationResponse {
