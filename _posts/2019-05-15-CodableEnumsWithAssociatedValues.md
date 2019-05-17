@@ -139,7 +139,7 @@ As mentioned in the explanation of the keyed container, we need to create a `Cod
 //declare which keys in the JSON we are interested in
 enum CodingKeys: String, CodingKey {
     case status
-    case confirmed
+    case confirmedUsers
     case position
     case reason
 }
