@@ -1,5 +1,5 @@
 ---
-title: The power of enums with associated values and making them conform to Codable
+title: Using Codable to make enums with associated values even more powerful
 permalink: /codable-enums-associated-values
 date: 2019-05-15 12:00:00.000000000 +03:00
 comments: true
@@ -9,6 +9,8 @@ categories:
 - iOS
 - Swift
 tags: [Codable, Enum]
+header:
+  og_image: /assets/images/20190515-CodableEnumsAssocValues.png
 ---
 
 One of the Swift's greatest features, and one of my favorites, are enums with associated values. The language itself uses them for its fundamentals, like `Optional<T>`, which either has a `.some(T)` or is `.none`. Another example is the new since Swift 5 `Result<T, E>`, which either contains a `.success(T)` or a`.failure(E)` case. In this post, we will go over cases (no pun intended) where an enum is more suitable than a struct or class, and also learn how one can make enums with associated values conform to Codable, achieving a better and safer usage of these data representations when they need to be encoded and decoded. You can scroll to the end of the post to get the final playground.
