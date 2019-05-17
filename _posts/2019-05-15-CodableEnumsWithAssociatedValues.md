@@ -221,4 +221,4 @@ Enums with associated values provide expected scenarios to the developer dealing
 
 ------
 
-*Thanks to [@rockthebruno](https://twitter.com/rockthebruno) for reviewing this post*
+*Thanks to [Bruno Rocha](https://twitter.com/rockthebruno) and [Antoine v.d. Lee](https://twitter.com/twannl) for reviewing this post*
