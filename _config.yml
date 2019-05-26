@@ -63,12 +63,6 @@ analytics:
   google:
     tracking_id          : "UA-134052334-2"
 
-# Comments
-comments:
-  provider: "disqus"
-  disqus:
-    shortname: "natanrolnik-blog"
-
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
