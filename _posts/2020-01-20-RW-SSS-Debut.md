@@ -13,7 +13,7 @@ header:
   og_image: https://koenig-media.raywenderlich.com/uploads/2020/01/SMSAuthentication-twitter.png
 ---
 
-A few months ago, RayWenderlich.com launched a Server Side Swift section and they were looking for authors to join the team. As I believe that Swift on the server has a promising future - and not only amongst iOS developers - I decided to apply.
+A few months ago, [RayWenderlich.com](https://RayWenderlich.com) launched a Server Side Swift section and they were looking for authors to join the team. As I believe that Swift on the server has a promising future - and not only amongst iOS developers - I decided to apply.
 
 After many weeks of effort and with the support of their great team (tech editors, editors, designers), the tutorial went live earlier this month and I couldn't be more proud. I've been consuming content from RayWenderlich.com since 2013, be them tutorials, books and video courses. Joining their team is a dream coming true.
 
