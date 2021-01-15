@@ -1,0 +1,9 @@
+{
+  "actions" : {
+    "run" : {
+      "enabled" : true,
+      "script" : "#!\/bin\/sh\n\nbundle exec jekyll serve"
+    }
+  },
+  "identifier" : "994A36BE-38C9-4EA1-9C37-152B9C538895"
+}
