@@ -19,21 +19,23 @@ Connected to the single repository containing the code for both Consumer and Pro
 
 Initially, I thought of building a web dashboard based on the Bitrise API. Or, possibly, storing the statuses at some server and updating it at the end of every build. But I quickly disregarded it. Requiring our devs to go to another page (specially now that everyone is remote, and displaying it in a TV in the office is not an option) and managing static pages or servers were factors that made me walk way from this idea. Then I thought about displaying a table with the existing and popular build badges, provided by many CI/CD solutions. Throw them in the repository's Readme in GitHub, and that's it!
 
+{% include image.html name="20211401-BitriseBadge.png" %}
+
 Bitrise provides status images, so I thought there would be almost no work: just embed the images in the readme, and that's it. Shortly after, I realized their Badge API is missing something basic: although it supports querying per branch statuses, it [doesn't for workflow IDs](https://discuss.bitrise.io/t/status-badges-per-workflow/658). As the different builds run per workflow, I couldn't go with this solution. 
 
-Embedding images in a markdown do not support any logic, as they're a simple GET request. I realized I would need some sort of logic running in a remote server: use the broader [Bitrise API](https://api-docs.bitrise.io), analyze the response, and return an image, or maybe a redirect to [Shields.io](https://shields.io) with the correct parameters.
+Embedding images in markdown do not support any logic, as they're simple GET requests. I realized I would need some sort of logic running in a remote server: use the broader [Bitrise API](https://api-docs.bitrise.io), analyze the response, and return an image, or maybe a redirect to [Shields.io](https://shields.io) with the correct parameters.
 
 Being able to run code in the cloud **on demand** seemed the perfect fit for my goal. Instead of managing servers, scaling and loading, many cloud providers do that for you by allocating the hardware resources which will execute your code only when it's necessary. They take care of the servers running your code, so the industry calls this model _serverless_. AWS sells it as Lambda, Google Cloud and Azure simply call it Serverless, and even Cloudflare allows having serverless function with their Workers product.
 
 ## The Swift Lambda Runtime
 
-Although I've used Lambda in the past for executing Javascript, I wanted to try the [Swift implementation of the AWS Lambda Runtime](https://github.com/swift-server/swift-aws-lambda-runtime), released a few months ago by the Swift Server Work Group. Besides the runtimes provided by default by AWS (as Node.js, Python, Ruby, Java and Go), one can implement custom runtimes which run on Amazon Linux. To achieve that, Lambda requires you to provide a binary, executable file and its associated libraries. **TODO: Help needed here**. Some people have been working on supporting Swift on Lambda for a long time, but finally we have now an official package by the Swift Server group.
+Although I've used Lambda in the past for executing Javascript, I wanted to try the [Swift implementation of the AWS Lambda Runtime](https://github.com/swift-server/swift-aws-lambda-runtime), released a few months ago by the Swift Server Work Group. Besides the runtimes provided by default by AWS (as Node.js, Python, Ruby, Java and Go), one can implement custom runtimes which run on Amazon Linux. Some people have been working on supporting Swift on Lambda for a long time, but finally we have now an official package by the Swift Server group.
 
 To get started, you can watch [this WWDC20 session](https://developer.apple.com/videos/play/wwdc2020/10644/) by [Tom Doron](https://twitter.com/tomerdoron), and also read [this](https://fabianfett.de/getting-started-with-swift-aws-lambda-runtime) and [this](https://fabianfett.de/swift-on-aws-lambda-creating-your-first-http-endpoint) posts by [Fabian Fett](https://twitter.com/fabianfett), which describes some of the prerequisites, as installing Docker, setting up an AWS account, and exposing your lambda to HTTP endpoint using API Gateway. Both Tom and Fabian work at Apple and maintain the Swift Lambda Runtime package.
 
 If you're an iOS developer, writing some Lambda functions might be the fastest way to get something up and running to provide remote APIs for your apps. Or, maybe, if you work for a company that has both Android and iOS products, moving some of the code to the cloud might save you from writing parsing logic twice in your app clients.
 
-> **Note:** this post will focus more on the implementation of the function to achieve my goal, rather than on how to deploy lambda functions. You can refer to Fabian's post linked above if you want to learn how to deploy your Lambda function and connecting it to API Gateway.
+> **Note:** this post will focus more on the implementation of the function itself to achieve my goal, rather than on how to deploy lambda functions. You can refer to Fabian's post linked above if you want to learn how to deploy your Lambda function and connecting it to API Gateway. Lambda and API Gateway are two different services, which can be used together.
 
 ## First Try: Redirecting to Shields.io
 
@@ -61,7 +63,7 @@ content-length: 102
 {"headers":{"Location":"https:\/\/img.shields.io\/badge\/Redirect-Succeeded-orange"},"statusCode":302}
 ```
 
-Notice how the `/invoke` function returns `200 OK`, while the body contains what API Gateway needs. It will convert the status code and the body into another response. If you deploy the same function, and integrate the it via API Gateway, calling it with `curl -i` will result in the following response:
+Notice how the `/invoke` function returns `200 OK`, while the body contains what API Gateway needs. API Gateway will convert the status code and the body into another response. After you deploy the same function, you should integrate the it via API Gateway, and calling it with `curl -i` will result in the following response:
 
 ```
 HTTP/2 302
@@ -155,6 +157,84 @@ I realized I would need to return my own images instead of relying on a redirect
 
 ## Returning Binary Data with Lambda and API Gateway
 
+The process to return the build badge as an image data would consist creating the images and figuring out what type of response I needed to provide API Gateway with. The first part was relatively easy: figuring out the best colors and shapes in Sketch.
 
+{% include image.html name="20211401-BadgesInSketch.png" %}
 
-## Enabling to Access the Failing Build
+After exporting them, I searched the correct way of returning binary data from a Lambda function with API Gateway. It turns out the data needs to be converted into a Base64 encoded string, and this string passed as the body parameter. Additionally, the key `isBase64Encoded` needs to be set to `true`, and API Gateway takes care of converting it from Base64 to binary. To make GitHub load the image correctly, the header `Content-Type` should be set to `image/png` or another valid content type.
+
+Because the images are small, and are only 4 in total, I decided to embed them as plain string variables into the code. I used an Xcode playground importing UIKit to convert a `UIImage` from resources into Base64. I copied the results from the playground console into something like this:
+
+```swift
+let consumerPassing = "iVBORw0KGgoAAAANSUhEUgA..." //a long string
+let proPassing = //similar
+let consumerFailing = //similar
+let proPassing = //similar
+```
+
+Once the strings were ready, it was it was left to find the correct image and wrap it in the response:
+
+```swift
+//decide the image based on the build response and workflow id
+let base64Image = build.statusText == "success" ? consumerPassing : consumerFailing
+
+let headers = ["Cache-Control": "no-cache", "Content-Type": "image/png"]
+let response = APIGateway.V2.Response(statusCode: .ok, headers: headers, body: base64Image, isBase64Encoded: true)
+return callback(.success(response))
+```
+
+With the code above deployed, calling my Lambda function returned an image which could be embedded in the Readme:
+
+{% include image.html name="20211401-BadgesReadMe.png" %}
+
+## Bonus Points: Linking to the Build Page
+
+After the mini dashboard was live, I had another idea, which could be the cherry on top. What if clicking the badges would take the developer straight to the page of the build. This could save them from searching the build in the list of builds. And after all, by using the Bitrise API, I had all the information I needed.
+
+One of the advantages of using API Gateway, is that you can integrate your lambda with many routes. For example, you can have `<Url-Host>/badge` and `<Url-Host>/link` using the same lambda, and deal with the routing on the lambda itself. This is exactly what I did. 
+ 
+On the API Gateway dashboard, I added two GET routes: one for `/badge`, and another one for `/link`. Under _Integrations_, I connected both routes to my lambda function, and inside my function, instead of returning the image right away, I did the following:
+
+```swift
+Lambda.run { // ...
+	//decode workflow_id...
+	
+	URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+		//decode build data...
+		
+		switch request.context.http.path {
+		case "/badge":
+			retrieveImage(for: build, workflowId: workflowId, callback: callback)
+		case "/link":
+			redirect(to: build.slug, callback: callback)
+		default:
+			let error = try? JSONEncoder().encodeAsString(ErrorResponse(error: "Invalid path: \(request.context.http.path)"))
+			return callback(.success(.init(statusCode: .badRequest, body: error)))
+		}
+	}
+}
+
+```
+
+Below that, I inserted the two functions called from the switch statement:
+
+```swift
+func redirect(to buildSlug: String, callback: @escaping (Result<APIGateway.V2.Response, Error>) -> Void) {
+	let headers = ["Cache-Control": "no-cache", "Location": "https://app.bitrise.io/build/\(buildSlug)"]
+	return callback(.success(.init(statusCode: .found, headers: headers)))
+}
+
+func retrieveImage(for build: Build, workflowId: String, callback: @escaping (Result<APIGateway.V2.Response, Error>) -> Void) {
+	//move here the response initialization based on the correct image for `build`
+}
+```
+
+After deploying the code above, and inserting the link URL for each image with the correct workflow ID, taking the user to the failing or passing build worked perfectly:
+
+{% include image.html name="20211401-LinkToBitriseBuild.gif" %}
+
+------
+
+##### In a Paragraph
+
+AWS Lambda is a great (and probably cheap) resource for running specific computational tasks. With the official runtime package, Swift is a fantastic language to write your lambdas with. Be it due to its low memory foot, type safety, and also for being a language you might be familiar with already. With API Gateway you can expose your functions to the web and call them from anywhere (app client, readme), and don't worry about server scaling and uptime.
