@@ -1,7 +1,7 @@
 ---
 title: Using Swift in AWS Lambda to Display CI Build Badges
 permalink: /swift-lambda-build-badges
-date: 2021-01-12 12:00:00.000000000 +03:00
+date: 2021-01-19 12:00:00.000000000 +03:00
 comments: true
 published: true
 status: publish
