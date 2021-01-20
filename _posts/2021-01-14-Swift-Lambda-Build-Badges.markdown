@@ -209,7 +209,7 @@ Lambda.run { // ...
 			redirect(to: build.slug, callback: callback)
 		default:
 			let error = try? JSONEncoder().encodeAsString(ErrorResponse(error: "Invalid path: \(request.context.http.path)"))
-			return callback(.success(.init(statusCode: .badRequest, body: error)))
+			return callback(.success(.init(statusCode: .notFound, body: error)))
 		}
 	}
 }
